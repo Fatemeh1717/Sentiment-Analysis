@@ -1,0 +1,929 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "kJ6ssXaGJfGN"
+   },
+   "source": [
+    "## CIND830 - Python Programming for Data Science  \n",
+    "### Assignment 1 (10% of the final grade) \n",
+    "### Due on February 8, 2021 11:59 PM  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "UWjXw7DsJfGP"
+   },
+   "source": [
+    "*****\n",
+    "This is a Jupyter Notebook document that extends a simple formatting syntax for authoring HTML and PDF.\n",
+    "Review [this](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html) website for more details on using Jupyter Notebook.\n",
+    "\n",
+    "Use the JupyterHub server on the Google Cloud Platform, provided by your designated instructor, for this assignment. \n",
+    "Ensure using **Python 3.7.6** release then complete the assignment by inserting your Python code wherever seeing the string \"#INSERT YOUR ANSWER HERE.\"\n",
+    "\n",
+    "When you click the `File` button, from the top navigation bar, then select `Export Notebook As ...`,\n",
+    "a document (PDF or HTML format) will be generated that includes\n",
+    " both the assignment content and the output of any embedded Python code chunks.\n",
+    "\n",
+    "Using [these](https://www.ryerson.ca/courses/students/tutorials/assignments/) guidelines,\n",
+    "submit **both** the IPYNB and the exported file (PDF or HTML).\n",
+    "Failing to submit both files will be subject to mark deduction."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "RDm-t4u8JfGP"
+   },
+   "source": [
+    "### Question 1 **[60 pts]**:\n",
+    "\n",
+    "\n",
+    "\n",
+    "A multi-valued function has been defined as follows\n",
+    "\n",
+    "$$\n",
+    "f(x) = \\left\\{\n",
+    "    \\begin{array}\\\\\n",
+    "       ({\\frac{x^2}{|x|+2}})^2 & \\mbox{if} \\ x < 5 \\\\\n",
+    "        {\\frac{x^2}{|x|+2}} & \\mbox{if} \\ x = 5 \\\\\n",
+    "       \\sqrt{\\frac{x^2}{|x|+2} } & \\mbox{if} \\ x > 5 \n",
+    "    \\end{array}\n",
+    "\\right.\n",
+    "$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "vARdfJN_JfGQ"
+   },
+   "source": [
+    "**a)** **[10 pts]** Write a program to ask the user to enter a floating-point real number, check whether the number is greater, equal or less than 5, then print the output according to the definition of the multi-valued function.\n",
+    "\n",
+    "For example, if the user enters `x = -57.8`, then the output should be:<br>\n",
+    "`The value of f(x) is 3121.1093571660267`\n",
+    "\n",
+    "Hint: Use the `math` module as it provides access to some of the essential mathematical functions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "CldaDRWdJfGQ",
+    "outputId": "402bc26e-0b7e-4067-8e31-765858adedc9"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Plaese enter the flaoting-point real number: -57.8\n",
+      "the value of the f(x)is  3121.1093571660267\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "import math\n",
+    "\n",
+    "x = input  (\"Plaese enter the flaoting-point real number: \")\n",
+    "x = float(x)\n",
+    "if  (x > 5):\n",
+    "     x = ((x * x)/(abs(x)+2)) ** 1/2\n",
+    "        \n",
+    "elif(x < 5):\n",
+    "    x =((x * x) / (abs(x)+2)) ** 2\n",
+    "        \n",
+    "else:\n",
+    "    x = (x * x) / (abs(x) +2)\n",
+    "    \n",
+    "print(\"the value of the f(x)is \", x)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "ZRoY5MRdJfGQ"
+   },
+   "source": [
+    "**b)**  **[10 pts]** Round the output of Q1.a to the nearest ineteger, convert that integer to a list of digits, then print the result.  \n",
+    "\n",
+    "For example, if the user enters `x = -57.8`, then the output should be: <br>\n",
+    "`The value of f(x) is  3121.1093571660267`<br>\n",
+    "`The list of digits is  [3, 1, 2, 1] `"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "b725VzBSJfGR",
+    "outputId": "8934e90c-77f2-49cd-ec19-2a1865657f11"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "the rounded outpot is:  3121\n",
+      "The list from number is [3, 1, 2, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "r = round(x)\n",
+    "print(\"the rounded outpot is: \" , r)\n",
+    "ilist = [int (y) for y in str(r)]\n",
+    "print (\"The list from number is \" + str(ilist)) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "__ArmJayJfGR"
+   },
+   "source": [
+    "**c)**  **[10 pts]** Find and print the `Median`, `Average` and `Mode` of the generated list in Q1.b.  For example, having `list = [6, 7, 7, 4]`, the result should be `Median = 6.5; Average = 6; Mode = 7`.  Ensure notifying the user if there is no unique mode found, as the `Mode` in this exercise returns only the single most common data item in the list.\n",
+    "\n",
+    "For example, if the user enters `x = -57.8`, then the output should be: <br>\n",
+    "`The value of f(x) is  3121.1093571660267`<br>\n",
+    "`The list of digits is  [3, 1, 2, 1]` <br>\n",
+    "`Median is 1.5 ; Average is 1.75 ; Mode =  1`\n",
+    "\n",
+    "However, if the user enters `x = -57.2`, then the output should be: <br>\n",
+    "`The value of f(x) is  3054.5040248356463` <br>\n",
+    "`The list of digits is  [3, 0, 5, 4]` <br>\n",
+    "`Median is 3.5 ; Average is 3 ; No unique mode found`\n",
+    "\n",
+    "Hint: Use the `statistics` module as it provides functions to calculate mathematical statistics of numeric data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "UaxzqgFIJfGS",
+    "outputId": "cb39d04d-3489-4016-c11c-0e5185b38545"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Mode =  1\n",
+      "Median =  1.5\n",
+      "Mean =  1.75\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "\n",
+    "import statistics\n",
+    "\n",
+    "print(\"Mode = \",statistics.mode(ilist))\n",
+    "print(\"Median = \",statistics.median(ilist))\n",
+    "print(\"Mean = \",statistics.mean(ilist))\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "LswUhIjdJfGS"
+   },
+   "source": [
+    "**d)**  **[10 pts]** Find and print the sum of squares of all the numbers of the list generated in Q1.b.  \n",
+    "\n",
+    "For example, if the user enters `x = -57.8`, then the output should be: <br>\n",
+    "`The value of f(x) is  3121.1093571660267`<br>\n",
+    "`The list of digits is  [3, 1, 2, 1]` <br>\n",
+    "`The sum of squares is 15`  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "ICOioDlKJfGS",
+    "outputId": "514c6ef3-26ef-4125-83dc-de84efe2be17"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The sum of squares is:  15\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "print(\"The sum of squares is: \", sum([i*i for i in ilist])) \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "I-eeT2BtJfGT"
+   },
+   "source": [
+    "**e)**  **[10 pts]** Find and print the least common multiple of the numbers in the list generated in Q1.b.  \n",
+    "\n",
+    "For example, if the user enters `x = -57.8`, then the output should be: <br>\n",
+    "`The value of f(x) is  3121.1093571660267`<br>\n",
+    "`The list of digits is  [3, 1, 2, 1]` <br>\n",
+    "`The least common multiple is 6`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "gm0k-xWbJfGT",
+    "outputId": "b96fe12c-be1e-4433-89ae-e35225efeda7"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The least common multiple is:  6\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "import numpy as np\n",
+    "print(\"The least common multiple is: \",np.lcm.reduce(ilist))\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "WQP1V7zOJfGT"
+   },
+   "source": [
+    "**f)**  **[10 pts]** Find and print the binary rpresentation of the numbers in the list generated in Q1.b.  \n",
+    "\n",
+    "For example, if the user enters `x = -57.8`, then the output should be: <br>\n",
+    "`The value of f(x) is  3121.1093571660267`<br>\n",
+    "`The list of digits is  [3, 1, 2, 1]` <br>\n",
+    "`The binary representation is ['11', '1', '10', '1']` "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 72,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The List is : [3, 1, 2, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print (\"The List is : \" + str(ilist))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "2GqP_jsyJfGU",
+    "outputId": "0848745a-a0e7-4d51-e09a-c94959608cad"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['11']['1']['10']['1']"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "\n",
+    "\n",
+    "for i in ilist:\n",
+    "    binary = bin(i).replace(\"0b\", \"\") \n",
+    "    print( [binary], end=''  ) \n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "pHcWCZ8mJfGU"
+   },
+   "source": [
+    "*****"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "O3jPbo4vAvPc"
+   },
+   "source": [
+    "### Question 2  **[40 pts]**:\n",
+    "\n",
+    "Write a program that accepts the coefficients of the folllowing two lines as inputs\n",
+    "\n",
+    "Line1: $a_1x+b_1y + c_1 = 0$\n",
+    "\n",
+    "Line2: $a_2x+b_2y + c_2 = 0$\n",
+    "\n",
+    "Then checks whether the two lines are parallel, intersecting or overlapping according to the conditions listed below."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Write a program that used  the coefficients as an input and then determinewhether the two lines are parallel, intersecting or overlapping"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "h_3gNcgeJfGU"
+   },
+   "source": [
+    "**a)**  **[10 pts]** Intersecting lines: If $\\frac{a_1}{a_2} \\ne \\frac{b_1}{b_2}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Please enter the  3 digit as coefficients of the ð‘Ž1ð‘¥+ð‘1ð‘¦+ð‘1=0 line in one line using commas \n",
+      "4,9,15\n",
+      "a1 is:  4\n",
+      "b1 is:  9\n",
+      "c1 is:  15\n"
+     ]
+    }
+   ],
+   "source": [
+    "a1,b1,c1=   input(\"Please enter the  3 digit as coefficients of the ð‘Ž1ð‘¥+ð‘1ð‘¦+ð‘1=0 line in one line using commas \\n\").split(',')\n",
+    "a1 = int(a1)\n",
+    "print(\"a1 is: \",a1 ) \n",
+    "b1 = int(b1)\n",
+    "print(\"b1 is: \",b1 ) \n",
+    "c1 = int(c1)\n",
+    "print(\"c1 is: \",c1 )  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Please enter the  3 digit as coefficients of the ð‘Ž2ð‘¥+ð‘2ð‘¦+ð‘2=0 line  in one line using commasand \n",
+      "7,9,5\n",
+      "a2 is:  7\n",
+      "b2 is:  9\n",
+      "c2 is:  5\n"
+     ]
+    }
+   ],
+   "source": [
+    "a2,b2,c2=input(\"Please enter the  3 digit as coefficients of the ð‘Ž2ð‘¥+ð‘2ð‘¦+ð‘2=0 line  in one line using commasand \\n\").split(',')\n",
+    "a2 = int(a2)\n",
+    "print(\"a2 is: \",a2 ) \n",
+    "b2 = int(b2)\n",
+    "print(\"b2 is: \",b2 ) \n",
+    "c2 = int(c2)\n",
+    "print(\"c2 is: \",c2 ) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**a)**  **[10 pts]** Intersecting lines: If $\\frac{a_1}{a_2} \\ne \\frac{b_1}{b_2}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Two lines are Intersecting \n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "if (a1/a2) != (b1/b2):\n",
+    "    print(\"Two lines are Intersecting \")\n",
+    "else:\n",
+    "    print(\" Two lines are  not Intersecting \")\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "b5J7kRLZAvPe"
+   },
+   "source": [
+    "**b)**   **[10 pts]** Parallel lines: If the lines are not intersecting and $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} \\ne \\frac{c_1}{c_2}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "id": "bHHNxP0IAvPe"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Two lines are not Parallel \n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "\n",
+    "if((a1/a2) != (b1/b2)) and ((a1/a2) == (b1/b2) != (c1/c2)) :\n",
+    "    print(\"Two lines are Parallel\")\n",
+    "else:\n",
+    "    print(\"Two lines are not Parallel \")\n",
+    "    \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "6q5tUb98JfGV"
+   },
+   "source": [
+    "**c)**   **[10 pts]** Overlapping lines: If the lines are not intersecting and $\\frac{a_1}{a_2} = \\frac{b_1}{b_2} = \\frac{c_1}{c_2}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "id": "PvQTbdc8AvPi"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Two lines are not Overlapping \n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "if((a1/a2) != (b1/b2)) and ((a1/a2) == (b1/b2) == (c1/c2)) :\n",
+    "    print(\"Two lines are Overlapping\")\n",
+    "else:\n",
+    "    print(\"Two lines are not Overlapping \")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "l9l0sjUoAvPk"
+   },
+   "source": [
+    "**d)**   **[10 pts]** Plot the two lines graphically using the `matplotlib` and `numpy` libraries or any other suitable libraries. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "id": "cDqwtAjhAvPk"
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "fig = plt.figure()\n",
+    "ax = fig.add_subplot(1, 1, 1)\n",
+    "x = np.linspace(-5,5,100)\n",
+    "\n",
+    "ax.spines['left'].set_position('center')\n",
+    "ax.spines['bottom'].set_position('center')\n",
+    "ax.spines['right'].set_color('none')\n",
+    "ax.spines['top'].set_color('none')\n",
+    "ax.xaxis.set_ticks_position('bottom')\n",
+    "ax.yaxis.set_ticks_position('left')\n",
+    "\n",
+    "plt.plot(x, (-a1*x-c1)/b1, '-.g', label='a1x+b1y+c1=0')\n",
+    "plt.plot(x, (-a2*x-c2)/b2, '-r', label='a2x+b2y+c2=0')\n",
+    "\n",
+    "plt.legend(loc='upper left')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "1pXjKc23jXTj"
+   },
+   "source": [
+    "*****"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "liJoAmA1LGOz"
+   },
+   "source": [
+    "### Question 3  **[30 pts]**:\n",
+    "Write a code for a Number Guessing Game. \n",
+    "The code assigns a random integer number from a given interval to a varible, then asks the user to make a guess to find that number. \n",
+    "\n",
+    "Do not forget to check the validity of the selected number:\n",
+    "- Is it an integer?\n",
+    "- Is it an integer that lies in the given range?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "13g6-UkaB2bW"
+   },
+   "source": [
+    "**a)**  **[10 pts]** Follow these steps to implement a simple version of the game:\n",
+    "- The code assigns a random integer number between 0 and 100 to a variable.\n",
+    "- The code gives the user only one chance to guess that number. \n",
+    "- The output of the code should be either 'correct' or 'wrong'.\n",
+    "\n",
+    "Hint:  Use the `random` module to generate a pseudo-random number."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "id": "pgjCsUosSprl"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " Please Enter just one number between 0 and 100: 60\n",
+      "Your guess is not right\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "import random\n",
+    "\n",
+    "systdigit = random.randint(0, 100)\n",
+    "userdigit =float(input(\" Please Enter just one number between 0 and 100: \" ))\n",
+    "\n",
+    "if userdigit in range (1,100) and userdigit.is_integer():\n",
+    "    if(systdigit==userdigit):\n",
+    "        print(\"Your guess is right\") \n",
+    "    else:\n",
+    "        print(\"Your guess is not right\")\n",
+    "else:\n",
+    "    print(\"Sorry , you should guess an integer number between 1 and 100 \")\n",
+    "    raise SystemExit\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "QLa2BEzGBzAc"
+   },
+   "source": [
+    "**b)**  **[10 pts]** Since it is difficult to guess a number in one try, let us give chances and clues. \n",
+    "\n",
+    "With unlimited trials and a random integer number in the inclusive range from 0 to 100, the code will compare the first guess with the random number and tell the user if the random number is lower or higher than the user's guess, and so on untill the user correctly guesses the random integer number. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "id": "DhhjKEO9_TG7"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " Please Enter just one number between 0 and 100: 50\n",
+      "Too large\n",
+      " Please Enter just one number between 0 and 100: 40\n",
+      "Too small\n",
+      " Please Enter just one number between 0 and 100: 45\n",
+      "You've guessed the right number\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "import random\n",
+    "systdigit = random.randint(0, 100)\n",
+    "\n",
+    "\n",
+    "while (True):\n",
+    "    userdigit =float(input(\" Please Enter just one number between 0 and 100: \" ))\n",
+    "    if(userdigit < systdigit):\n",
+    "        print(\"Too small\")\n",
+    "    elif(userdigit > systdigit):\n",
+    "        print(\"Too large\")\n",
+    "    else:\n",
+    "        print(\"You've guessed the right number\")\n",
+    "        break"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "bvWLIEBTFNE1"
+   },
+   "source": [
+    "**c)**  **[10 pts]** Let us develop a better version of the program by limiting the number of chances for guessing the random number based on the interval's boundaries.  \n",
+    "\n",
+    " \n",
+    "Start with asking the user to enter two numbers, being the lower and upper bounds of the interval from which the random number will be selected. After the application chooses the random number based on the entered boundaries, find and print the number of attempts given to the user by computing the square root of the difference between the lower and upper bounds.\n",
+    "\n",
+    "Notably, the lower-bound value must be at least 1, and the upper-bound value must be higher than the lower-bound one.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "colab": {
+     "base_uri": "https://localhost:8080/"
+    },
+    "id": "MexIqFs8EH63",
+    "outputId": "e1a7b697-b124-4318-a986-8ec1138e0bf5"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " Please Enter the smaller number:15\n",
+      "Please Enter the larger number:20\n",
+      "Number of attepts for this range: 2\n",
+      "Enter your guess: 18\n",
+      "Too large\n",
+      "Enter your guess: 17\n",
+      "Too large\n",
+      "Enter your guess: 16\n",
+      "You've guessed the number:  3 tries\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "\n",
+    "import random\n",
+    "Smaller= int(input(\" Please Enter the smaller number:\"))\n",
+    "Larger = int(input( \"Please Enter the larger number:\"))\n",
+    "\n",
+    "MyNumber = random.randint(Smaller,Larger)\n",
+    "count=0\n",
+    "\n",
+    "Numberofattepts = round ((Larger-Smaller)**1/2)\n",
+    "print(\"Number of attepts for this range:\",Numberofattepts )\n",
+    "\n",
+    "while (True):\n",
+    "    count +=1\n",
+    "    UserNumber = int(input(\"Enter your guess: \"))\n",
+    "    if(UserNumber<MyNumber):\n",
+    "        print(\"Too small\")\n",
+    "    elif(UserNumber>MyNumber):\n",
+    "        print(\"Too large\")\n",
+    "    else:\n",
+    "        print(\"You've guessed the number: \",count, \"tries\")\n",
+    "        break"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "E7H-NKYDjaiE"
+   },
+   "source": [
+    "*****"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "2XrFEyymLKnR"
+   },
+   "source": [
+    "### Question 4  **[30 pts]**:\n",
+    "\n",
+    "Write a code for The Hangman Game. In this game, the user only enters the number of letters existing in that word, and the computer tries to guess them based on a fixed number of attempts.  The game ends if the computer correctly guessed all the letters in order or used all of the given attempts."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "id": "Ocvn4QXHDgId"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " Please Enter the number of letters existing in your word:6\n",
+      "The computer gusee is:  computer\n",
+      "try one more time\n",
+      "The computer gusee is:  science\n",
+      "try one more time\n",
+      "The computer gusee is:  computer\n",
+      "try one more time\n",
+      "The computer gusee is:  winter\n",
+      "You're win.The guess is: winter\n"
+     ]
+    },
+    {
+     "ename": "SystemExit",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "An exception has occurred, use %tb to see the full traceback.\n",
+      "\u001b[1;31mSystemExit\u001b[0m\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "C:\\Users\\HP\\anaconda3\\lib\\site-packages\\IPython\\core\\interactiveshell.py:3435: UserWarning: To exit: use 'exit', 'quit', or Ctrl-D.\n",
+      "  warn(\"To exit: use 'exit', 'quit', or Ctrl-D.\", stacklevel=1)\n"
+     ]
+    }
+   ],
+   "source": [
+    "#INSERT YOUR ANSWER HERE.\n",
+    "import random\n",
+    "wordnumber = int(input(\" Please Enter the number of letters existing in your word:\"))\n",
+    "\n",
+    "count = 10\n",
+    "\n",
+    "words = [ 'computer', 'science', 'programming', \n",
+    "         'python', 'mathematics', 'player', 'condition', \n",
+    "         'reverse', 'water', 'board', 'geeks', 'cind 830','winter', 'covid19','overcome', 'ryerson'] \n",
+    "while(count > 1):\n",
+    "    count -=1\n",
+    "    word = random.choice( words )\n",
+    "    print(\"The computer gusee is: \", word )\n",
+    "    for letter in words:\n",
+    "        if(len(letter)== wordnumber and letter == word):\n",
+    "            print(\"You're win.The guess is:\" , letter)\n",
+    "            raise SystemExit\n",
+    "        else:\n",
+    "            continue \n",
+    "    print(\"try one more time\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Note about Question  4: \n",
+    "###### Becuase I do not have enough  assumption about the Hangman Game in this Question, I've tried to simplify the queistion by making my assumption. For example, I know that for this game I need a list of valid words which should be read from file but for the simplicity  I used the fixed word list. \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "id": "7vRukEN2JfGX"
+   },
+   "source": [
+    "#### This is the end of assignment 1"
+   ]
+  }
+ ],
+ "metadata": {
+  "colab": {
+   "collapsed_sections": [],
+   "name": "CIND830F20 Assignment 1 QA_shared.ipynb",
+   "provenance": []
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.9"
+  },
+  "nteract": {
+   "version": "0.27.0"
+  },
+  "varInspector": {
+   "cols": {
+    "lenName": 16,
+    "lenType": 16,
+    "lenVar": 40
+   },
+   "kernels_config": {
+    "python": {
+     "delete_cmd_postfix": "",
+     "delete_cmd_prefix": "del ",
+     "library": "var_list.py",
+     "varRefreshCmd": "print(var_dic_list())"
+    },
+    "r": {
+     "delete_cmd_postfix": ") ",
+     "delete_cmd_prefix": "rm(",
+     "library": "var_list.r",
+     "varRefreshCmd": "cat(var_dic_list()) "
+    }
+   },
+   "types_to_exclude": [
+    "module",
+    "function",
+    "builtin_function_or_method",
+    "instance",
+    "_Feature"
+   ],
+   "window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}

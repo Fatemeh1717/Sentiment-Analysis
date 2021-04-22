@@ -1,0 +1,391 @@
+---
+title: 'CIND 123 - Data Analytics: Basic Methods Winter2021 Assignment 3'
+author: 
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+<center> <h1> Assignment 3 (10%) </h1> </center>
+<center>  <h3> [] </h2> </center>
+<center> <h3> [] </h2> </center>
+---
+## Instructions 
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. Review this website for more details on using R Markdown <http://rmarkdown.rstudio.com>.
+
+Use RStudio for this assignment. Complete the assignment by inserting your R code wherever you see the string "#INSERT YOUR ANSWER HERE".
+
+When you click the **Knit** button, a document (PDF, Word, or HTML format) will be generated that includes both the assignment content as well as the output of any embedded R code chunks.
+
+Submit **both**  the rmd and generated output files. Failing to submit both files will be subject to mark deduction.
+
+
+## Sample Question and Solution
+
+Use `seq()` to create the vector $(2,4,6,\ldots,20)$.
+
+```{r}
+#Insert your code here.
+seq(2,20,by = 2)
+```
+### Note:
+
+You will use 'Admission_Predict.csv' for Assignment-3. This dataset includes the data of the applicants of an academic program. Each application has a unique serial number, which represents a particular student. The dataset contains several parameters which are considered important during the application for Masters Programs.
+The parameters included are :
+
+1) GRE Scores (out of 340)
+
+2) TOEFL Scores (out of 120)
+
+3) University Rating (out of 5)
+
+4) Statement of Purpose (SOP) (out of 5)
+
+5) Letter of Recommendation (LOR) Strength (out of 5)
+
+6) Undergraduate GPA (out of 10)
+
+7) Research Experience (either 0 or 1)
+
+8) Chance of Admit (ranging from 0 to 1)
+
+
+**Download "Admission_Predict.csv" dataset and load it as 'data'.**
+```{r}
+Admission_DataSet <- read.csv(file="Admission_Predict.csv", header= T)
+
+```
+
+
+## Question 1 (30 points in total)
+
+
+a)
+
+  i- Display the first three rows in this dataset.(1 point)
+```{r}
+
+head(Admission_DataSet,3)
+
+```
+
+
+  ii - Display the structure of all variables.(1 point)
+```{r}
+
+str(Admission_DataSet)
+
+```
+  
+
+  iii - Print the descriptive statistics of the admission data to understand the    data a little better (min, max, mean, median, 1st and 3rd quartiles). (1 point)
+```{r}
+
+summary(Admission_DataSet)
+
+```
+  
+
+  iv - Use a histogram to assess the normality of the 'Chance.of.Admit' variable    and explain whether it appears normally distributed or not and why? (1 point)
+
+```{r}
+
+Chance.of.Admit <- Admission_DataSet$Chance.of.Admit
+hist(Chance.of.Admit, probability= T )
+
+
+
+# The histogram sounds symmetric and it has density around the mean of Chance of Admit(0.7244) but it is a little skewed to the left because the median (0.7300) is a little bit greater than Mean(0.7244).
+
+```
+
+b)  Create a set of boxplots that shows the distribution of Chance.of.Admit and SOP variables.Use different colors for different SOP scores month. (8 points)
+```{r}
+Sop <- Admission_DataSet$SOP
+
+boxplot(Chance.of.Admit ~ Sop , data=Admission_DataSet , xlab ="Sop" ,ylab = "Admission Chance"  ,
+        col=(c("gold","green","red","orange")),
+        main="Chance of Admission Distribution  vs SOP")
+
+``` 
+
+c) 
+
+i- Find the covariance between the "GRE.Score" and the "Chance.of.Admit". (3 points)
+
+```{r}
+# The value of the covariance is about 1.31 that indicate positive linear relationship between these two variables.
+
+cov(Admission_DataSet$GRE.Score,Admission_DataSet$Chance.of.Admit)
+
+# This is a extra step
+
+cov(Admission_DataSet$TOEFL.Score,Admission_DataSet$Chance.of.Admit)
+cov(Admission_DataSet$CGPA,Admission_DataSet$Chance.of.Admit)
+
+
+```
+
+
+ii- Find the correlation between the "GRE.Score", "TOEFL.Score", "CGPA" and the "Chance.of.Admit". (3 points)
+
+```{r}
+# I use pair() function to create a scatter plot matrix for the following variables.It is just extra step.
+
+vars <- c("GRE.Score","TOEFL.Score","CGPA","Chance.of.Admit" )
+pairs(Admission_DataSet[vars])
+
+Mydata <- Admission_DataSet[,c(2,3,7,9)]
+
+
+cor(Mydata)
+
+```
+
+iii - Interpret the covariance and correlation results obtained from i and ii in terms of the strength and direction of the relationship. (4 points)
+```{r}
+# The value of the covariance and correlation for GRE.Score  are  1.3132 and 0.8026 respectively that indicates strong positive linear relationship between two variables. The value of the covariance and correlation for TOEFL.Score  are  0.6851 and 0.7915 respectively that indicates relatively strong positive linear relationship between two variables. The value of the covariance and correlation for CGPA  are  0.0742 and 0.8732 respectively that indicates very strong positive linear relationship between these two variables.(These Relationship are shown well in the Pairs() and ggplot()diagram)
+
+```
+
+d)  Use ggplot() to plot the graphs to see the relationship between each of three variables (GRE.Score, TOEFL.Score, CGPA) with Chance.of.Admit. (8 points)
+
+
+```{r}
+
+library(ggplot2)
+require(gridExtra)
+
+#install.packages("gridExtra")
+
+GRE.Score <-Admission_DataSet$GRE.Score
+TOEFL.Score <-Admission_DataSet$TOEFL.Score
+CGPA <- Admission_DataSet$CGPA
+
+
+
+GREggplot <- ggplot(Admission_DataSet,aes(x=GRE.Score , y= Chance.of.Admit))+
+  geom_point()+
+  stat_smooth()
+
+TOEFLggplot<- ggplot(Admission_DataSet,aes(x=TOEFL.Score , y= Chance.of.Admit))+
+  geom_point()+
+  stat_smooth()
+
+CGPAggplot <- ggplot(Admission_DataSet,aes(x=CGPA , y= Chance.of.Admit))+
+  geom_point()+
+  stat_smooth()
+
+
+grid.arrange(GREggplot,TOEFLggplot, CGPAggplot , nrow= 1 , ncol=3)
+
+```
+
+## Question 2 (40 points in total)
+
+
+a) Define the linear regression model  between  GRE.Score and Chance.of.Admit (3 points)
+
+
+```{r}
+GRE.ScoreModel <-lm(formula =Chance.of.Admit~GRE.Score )
+GRE.ScoreModel
+
+
+```
+
+i - Plot the regression (least-square) line on the same plot.(3 points)
+```{r}
+
+plot(GRE.Score, Chance.of.Admit, xlab = "GRE.Score", ylab= "Admission.Chance" , main=" GRE Score VS Admission Chance") 
+abline(lm(Chance.of.Admit~GRE.Score))
+
+# or we can use the ggplt(this is the extra step)
+
+mygragh <- ggplot(Admission_DataSet, aes(x=GRE.Score , y=Chance.of.Admit))+
+  geom_point(size=2 , shape=23)+
+  stat_smooth(method = "lm",
+              col= "#C42126",se= FALSE, size=1)
+
+mygragh
+
+
+```
+
+
+ii - Explain the meaning of the slope and y-intercept for the least-squares regression line in (b). (3 points)
+
+```{r}
+
+#the slope of the line equation means Δy divided by Δx . According to this model if the GRE Score increases by 1 unit, the Chance of Admission will increase by 0.009976  , and the positive slope indicates a positive relationship between GRE Score and the Chance.of.Admit that means the greater the GRE Score the greater the Chance.of.Admit.
+
+#y intercept is indicating that even if the GRE.Score was Zero the amount of Chance of Admission will be predict as -2.4360.The negative intercept doesn't have any realistic meaning to it as the Chance of Admit cannot hold any negative value. this negative intercept in this case is just a statistical value for the linear regression.
+
+
+
+
+```
+b) Print the results of this model and interpret the results by following questions:
+
+i -  What is the number of observations was the regression run on? (3 points)
+```{r}
+summary(GRE.ScoreModel)
+
+# This summary shows that the intercept of this model is -2.4360842, The Coefficient of GRE.Score is 0.0099759 which show a positive relationship. According this model if the GRE Score increases by 1 unit, the Chance of Admission will increase by 0.0099759. The Residual standard error is 0.08517 means that the differences between expected value and observed value is 0.08517.However the adjusted R^2 value is 0.6433 which means this model is relatively good fit for this data and it indicates that this model can explain about 64 percent of the recorded data. . Also in F-statistics the p-value is extremely small indicating that this is a highly significant result.  the number of observation was 399 because the Df is 398=n-1.
+
+
+```
+
+ii -  Interpret the R-squared of this regression? (4 points)
+```{r}
+# the adjusted R^2 value is 0.6433 which means this model is relatively good fit for this data and it indicates that this model can explain about 64 percent of the recorded data and in the remaining 36 percent can be attributed to error that this model cannot explain.
+
+
+```
+
+iii -  Write the regression equation associated with this regression model? (4 points)
+```{r}
+
+#G_Chance.of.Admit = -2.4360842 +(0.0099759 * GRE.Score) 
+ 
+```
+
+c) Use the regression line to predict the chance of admit when GRE score 310. (10 points)
+```{r}
+# We can use the regression equation associated with this model. 
+sample_GRE_Score = 310
+
+G_Chance.of.Admit = -2.4360842 +(0.0099759 * sample_GRE_Score) 
+
+G_Chance.of.Admit
+
+
+# we can use the predict function
+
+new.df <- data.frame(GRE.Score=c(310))
+
+predict(GRE.ScoreModel,new.df)
+```
+
+d) Drawing on this linear model between GRE.Score and Chance.of.Admit, what should be GRE score of a student who has 50% of chance of admission? (10 points)
+
+```{r}
+
+G_Chance.of.Admit = 0.50
+G_Chance.of.Admit = -2.4360842 +(0.0099759 * sample_GRE_Score) 
+sample_GRE_Score
+
+
+```
+
+## Question 3 (30 points in total)
+
+a) Use three variables ('GRE.Score','TOEFL.Score', 'CGPA')  to build a multiple linear regression model to predict 'Chance.of.Admit'. Display a summary of your model indicating Residuals, Coefficients, ..., etc. What conclusion can you draw from this summary? (8 points)
+
+```{r}
+
+G_T_C_Model <- lm(formula = Chance.of.Admit~ GRE.Score+TOEFL.Score+CGPA, data = Admission_DataSet)
+summary(G_T_C_Model)
+
+#since the p-value for three variables ('GRE.Score','TOEFL.Score', 'CGPA') is less than 0.05, we can conclude that the linear relationship between each of them and the Chance of Admit is  significant. However, the very small p-value for CGPA (much below 0.05) indicates that there is a significant linear relationship between CGPA and the Chance of Admit. since the slopes for  three variables ('GRE.Score':0.0022660,'TOEFL.Score':0.0031123, 'CGPA':0.1462844) are positive, the relationship is a positive linear relationship.
+#adjusted R-squared indicates that about 78.37 percent of data can be predicted with this model.
+
+ 
+```
+
+b) Write the regression equation associated with this multiple regression model? (8 points)
+
+```{r}
+# GTC_Chance.of.Admit = -1.5856984 +(0.0022660 *GRE.Score) +(0.0031123*TOEFL.Score )+ (0.1462844*CGPA)
+
+```
+
+c) Using this model:
+
+i- Find the chance of admit for the 3rd student and 23rd students in the dataset. (4 points)
+
+```{r}
+
+
+#3rd_student_Chance.of.Admit = -1.5856984 +(0.0022660 *GRE.Score) +(0.0031123*TOEFL.Score )+ (0.146284*CGPA)
+
+GRE.Score_3rd <- Admission_DataSet$GRE.Score[which(Admission_DataSet$Serial.No.==3)]
+GRE.Score_23rd <- Admission_DataSet$GRE.Score[which(Admission_DataSet$Serial.No.==23)]
+
+
+TOEFL.Score_3rd <- Admission_DataSet$TOEFL.Score[which(Admission_DataSet$Serial.No.==3)]
+TOEFL.Score_23rd <- Admission_DataSet$TOEFL.Score[which(Admission_DataSet$Serial.No.==23)] 
+
+
+CGPA_3rd <- Admission_DataSet$CGPA[which(Admission_DataSet$Serial.No.==3)]
+CGPA_23rd<- Admission_DataSet$CGPA[which(Admission_DataSet$Serial.No.==23)] 
+
+
+
+Chance.of.Admit_3rd_Predicted = -1.5856984 +(0.0022660 *GRE.Score_3rd) +(0.0031123*TOEFL.Score_3rd )+ (0.146284*CGPA_3rd)
+Chance.of.Admit_3rd_Predicted
+
+Chance.of.Admit_23rd_Predicated = -1.5856984 +(0.0022660 *GRE.Score_23rd) +(0.0031123*TOEFL.Score_23rd )+ (0.146284*CGPA_23rd)
+Chance.of.Admit_23rd_Predicated
+```
+
+ii- Identify which one has higher chance than the other and print the difference between the chance of admit of these two students.(3 points)
+
+```{r}
+# base on G_T_C_Model the Chance of.Admit for the 3rd student is  : 0.6243088 and the Chance of.Admit for the 23rd student is 0.9082744 . It seems that base on the predicted value the 23rd student has higher chance then the 3rd student.
+
+Diff_3rd_23rd_Predicted <- (Chance.of.Admit_23rd_Predicated) - (Chance.of.Admit_3rd_Predicted) 
+Diff_3rd_23rd_Predicted
+ 
+# (this is extra step),Also the Chance of admit base on the database for the 3rd student is : 0.72 and for the 23rd student is 0.94. As we can see there is a difference between the predicted value and actual value(observed)  for the 3rd student it is  0.0956912 and t for the 23rd student it is 0.0317256. 
+
+Chance_of_Admit_3rd_observed <- Admission_DataSet$Chance.of.Admit[which(Admission_DataSet$Serial.No.==3)]
+Chance_of_Admit_3rd_observed
+
+Diff_Predict_Observe_3rd <- (Chance_of_Admit_3rd_observed) - (Chance.of.Admit_3rd_Predicted ) 
+Diff_Predict_Observe_3rd
+
+Chance_of_Admit_23rd_observed<- Admission_DataSet$Chance.of.Admit[which(Admission_DataSet$Serial.No.==23)]
+Chance_of_Admit_23rd_observed
+
+Diff_Predict_Observe_23rd <- (Chance_of_Admit_23rd_observed)-(Chance.of.Admit_23rd_Predicated)  
+Diff_Predict_Observe_23rd
+```
+
+d) Explain the difference between the model in Question 2(b) and the  the model in Question 3(b) (7 points)
+```{r}
+#1) Between the three variables, CGPA , GRE.Score ,and TOEFL are more correlate respectively
+
+#2) GRE.Score Model shows that the intercept of this model is -2.4360, The Coefficient of GRE.Score is 0.0099 which show a positive relationship. According this model if the GRE Score increases by 1 unit, the Chance of Admission will increase by 0.009976. The Residual standard error is 0.08517 means that the differences between expected value and observed value is 0.08517.However the adjusted R^2 value is 0.6433 which means this model is relatively good fit for this data and it indicates that this model can explain about 64 percent of the recorded data. . Also in F-statistics the p-value is extremely small indicating that this is a highly significant result.  the number of observation was 399 because the Df is 398=n-1.
+
+
+#3) G_T_C_Model shows that the intercept of this model is -1.5856984, The Coefficient of GRE.Score is 0.0022660 and The Coefficient of TOEFL.Score is 0.0031123 and the Coefficient of CGPA is 0.1462844  which show a positive relationship.Since the p-value for three variables ('GRE.Score','TOEFL.Score', 'CGPA') is less than 0.05, we can conclude that the linear relationship between each of them and the Chance of Admit is  significant.However, the very small p-value for CGPA (much below 0.05) indicates that there is a significant linear relationship between CGPA and the Chance of Admit. The Residual standard error is 0.06632 means that the differences between expected value and observed value is 0.06632.However the adjusted R^2 value is 0.7837 which means this model is relatively excellent fit for this data and it indicates that this model can explain about 78 percent of the recorded data. . Also in F-statistics the p-value is extremely small indicating that this is a highly significant result.  the number of observation was 397 because the Df is 396=n-1.
+ 
+
+
+
+#4) Generally ,Base on Adjusted R-squared G_T_C_Model is more powerful in prediction rather than GRE.Score Model .
+
+
+summary(GRE.ScoreModel)
+coef(GRE.ScoreModel)
+cor(GRE.Score, Chance.of.Admit)
+
+
+summary(G_T_C_Model)
+coef(G_T_C_Model)
+cor(TOEFL.Score, Chance.of.Admit)
+cor(CGPA, Chance.of.Admit)
+
+
+
+```
+
+
+
+
+
+
+
+

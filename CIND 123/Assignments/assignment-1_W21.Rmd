@@ -1,6 +1,6 @@
 ---
 title: 'CIND 123 - Data Analytics: Basic Methods'
-author: 'Fatemeh Kamyabkalantari'
+author: 
 output:
   html_document: default
   pdf_document: default

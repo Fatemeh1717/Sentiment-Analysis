@@ -1,0 +1,128 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+###1- Read the train.csv file from the following website:
+https://raw.githubusercontent.com/agconti/kaggle-titanic/master/data/train.csv
+Have a look at the dataset by using the head, tail, str and summary commands.
+
+```{r}
+
+data_train <- read.csv(file = "https://raw.githubusercontent.com/agconti/kaggle-titanic/master/data/train.csv", sep = ",", header = TRUE)
+
+str(data_train)
+summary(data_train)
+head(data_train)
+tail(data_train)
+
+```
+
+
+
+###2- Change the Pclass and Survived attributes to factors.
+```{r}
+
+data_train$Pclass <- as.factor(data_train$Pclass)
+data_train$Survived <- as.factor(data_train$Survived)
+str(data_train)
+
+
+
+```
+
+###3- Check the missing values of the Age and Name attributes. The Name attribute consists
+of titles such as Miss., Mrs., Mr. and Dr. For a title containing a missing value, assign
+the mean age value for each title not containing a missing value. After these imputations,
+check the missing values of Age.
+```{r}
+
+sum(is.na(data_train$Age) == TRUE)
+length(data_train$Age)
+
+
+
+sum(is.na(data_train$Name) == TRUE)
+length(data_train$Name)
+
+```
+
+
+```{r}
+mean.mr = mean(data_train$Age[grepl("Mr\\.",data_train$Name) & !is.na(data_train$Age)])
+mean.mr
+data_train$Age[grepl(" Mr\\.",data_train$Name) & is.na(data_train$Age)]=mean.mr
+data_train$Age
+```
+
+```{r}
+mean.mrs = mean(data_train$Age[grepl("Mrs\\.", data_train$Name) & !is.na(data_train$Age)])
+mean.mrs
+data_train$Age[grepl(" Mrs\\.",data_train$Name) & is.na(data_train$Age)]=mean.mrs
+data_train$Age
+
+```
+
+```{r}
+mean.dr = mean(data_train$Age[grepl("Dr\\.", data_train$Name) & !is.na(data_train$Age)])
+mean.dr
+data_train$Age[grepl(" Dr\\.",data_train$Name) & is.na(data_train$Age)]=mean.dr
+data_train$Age
+```
+
+
+
+```{r}
+
+
+mean.miss = mean(data_train$Age[grepl("Miss\\.", data_train$Name) & !is.na(data_train$Age)])
+mean.miss
+data_train$Age[grepl(" Miss\\.",data_train$Name) & is.na(data_train$Age)]=mean.miss
+data_train$Age
+```
+
+```{r}
+mean.null = mean(mean.miss,mean.mr,mean.mrs,mean.dr)
+mean.null
+data_train$Age[is.na(data_train$Age)]=mean.null
+```
+
+
+```{r}
+sum(is.na(data_train$Age))
+
+```
+
+###4- List the distribution of Port of Embarkation. Replace empty entries with NA for Embarked attribute. Assign the two missing values to the most counted port, which is Southampton in this case.
+
+```{r}
+str(data_train$Embarked)
+
+data_train$Embarked <- as.factor(data_train$Embarked)
+str(data_train$Embarked)
+
+table(data_train$Embarked, useNA = "always")
+data_train$Embarked <- replace(data_train$Embarked,data_train$Embarked == "", NA)
+sum(is.na(data_train$Embarked))
+
+data_train$Embarked[which(is.na(data_train$Embarked))]='S'
+table(data_train$Embarked , useNA = "always")
+summary(data_train$Embarked)
+
+
+```
+
+
+
+
+

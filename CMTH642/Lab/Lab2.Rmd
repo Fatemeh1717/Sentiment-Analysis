@@ -1,0 +1,102 @@
+---
+title: "Lab2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+### 1-A bottle filling machine is set to fill bottles with soft drink to a volume of 500 ml. The
+actual volume is known to follow a normal distribution. The manufacturer believes the
+machine is under-filling bottles. A sample of 20 bottles is taken and the volume of liquid
+inside is measured.
+The volumes were: 484.11, 459.49, 471.38, 512.01, 494.48, 528.63, 493.64, 485.03, 473.88,
+501.59, 502.85, 538.08, 465.68, 495.03, 475.32, 529.41, 518.13, 464.32, 449.08, 489.27
+(a) Calculate the sample mean and standard deviation.
+(b) Use a one-sample t-test to determine whether the bottles are being consistently
+under filled using a significance level of 0.01.
+
+H0: mean(bottel_samle) = mu (population sample:500 ml)
+HA: mean(bottle_sample) < mu (population sample:500 ml)
+
+if p-value < 0.01 --> reject
+if p-value >0.01 --> not enough evidence to reject the null hypothesis
+
+
+```{r}
+bottels <-c(484.11, 459.49, 471.38, 512.01, 494.48, 528.63,
+493.64, 485.03, 473.88, 501.59, 502.85, 538.08, 465.68, 495.03,
+475.32, 529.41, 518.13, 464.32, 449.08, 489.27)
+
+mean(bottels)
+sd(bottels)
+
+t.test(bottels , mu=500 , alternative = "less" , conf.level = 0.99)
+
+```
+Because the p-value is greater than 0.01 so we do not enogh evidence to rejecet the null hypothesis
+
+### 2-An outbreak of Salmonella-related illness was attributed to ice cream produced at a certain factory. Scientists measured the level of Salmonella in 9 randomly sampled batches
+of ice cream.
+The levels (in MPN/g) were: 0.593 0.142 0.329 0.691 0.231 0.7930.5190.392 0.418
+Assuming that the data follows the normal distribution, is there evidence that the mean
+level of Salmonella in the ice cream is greater than 0.3 MPN/g?
+
+H0: mean(x)== mean(population sample=0.3)
+Ha: mean(x)> mean(population sample=0.3)
+
+```{r}
+x = c(0.593,0.142,0.329,0.691,0.231,0.793,0.519,0.392,0.418)
+
+t.test(x, alternative = "greater", mu=0.3)
+
+
+```
+Because the p-value 0.02 is less then 0.05 we can reject the null hypothesis
+
+### 3-Load the MASS package. The immer dataset of the MASS library have yields from
+a barley field trial. Y1 attribute represents yields in 1931 and Y2 attribute represents
+yields in 1932. Assuming that the data follows the normal distribution, find the 95%
+confidence interval estimate of the difference between the mean barley yields of 1931 and
+1932.
+
+```{r}
+install.packages("MASS")
+library(MASS)
+
+
+```
+
+
+```{r}
+t.test(immer$Y1 , immer$Y2 , paired = TRUE)
+```
+
+### 4-Assuming that the data in mtcars follows the normal distribution, find the 95% confidence interval estimate of the difference between the mean gas mileage of manual and automatic transmissions
+
+
+```{r}
+data("mtcars")
+str(mtcars)
+
+automatic = mtcars$am == 0
+
+mpg.auto = mtcars[automatic, ]$mpg
+mpg.auto
+
+mpg.manual <- mtcars[!automatic,]$mpg
+mpg.manual
+
+t.test(mpg.auto, mpg.manual)
+```
+
+
+
+

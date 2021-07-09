@@ -1,0 +1,93 @@
+---
+title: "Lab3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+### 1-Below, there are three groups with seven observations per group:
+Group 1: 18.2, 20.1, 17.6, 16.8, 18.8, 19.7, 19.1
+Group 2: 17.4, 18.7, 19.1, 16.4, 15.9, 18.4, 17.7
+Group 3: 15.2, 18.8, 17.7, 16.5, 15.9, 17.1, 16.7
+(a) Create vectors for each group and check the means.
+(b) Create a dataframe for these three vectors.
+(c) Visualize the the groups using boxplot.
+(d) We are assuming that the distribution of samples are approximately normally distributed. To investigate weather there is any significant difference among the means
+of these three groups, apply aov command which runs ANOVA test.
+
+
+```{r}
+Group1 <- c(18.2,20.1,17.6,16.8,18.8,19.7,19.1) 
+Group2 <- c(17.4,18.7,19.1,16.4,15.9,18.4,17.7)  
+Group3 <- c(15.2,18.8,17.7,16.5,15.9,17.1,16.7) 
+
+mean(Group1)
+mean(Group2)
+mean(Group3)
+
+obsevations <- c(Group1,Group2,Group3)
+Group_Numbers <- rep(1:3, rep(7,3))
+
+Group_Numbers <-as.factor(Group_Numbers)
+Data_Group <- data.frame(obsevations, Group_Numbers)
+Data_Group
+
+
+
+boxplot(obsevations~Group_Numbers , data = Data_Group)
+
+summary(aov(obsevations~Group_Numbers , data = Data_Group))
+
+
+```
+Since the p-value is less than 0.05, we reject the null hypothesis. We conclude that there is significant difference among the means of these three groups.
+
+
+
+### 2-Load the ISwR library and look at the red.cell.folate data. This dataset contains data on red cell folate levels in patients receiving three different methods of ventilation during anesthesia. Read the description provided in R. This will give you more domain knowledge about the data. 
+
+(a) Visualize the distribution of each ventilation method using boxplot.
+(b) Find out whether at least one method of ventilation during anesthesia have outstanding effect on the red folate.
+
+```{r}
+library(ISwR)
+View(red.cell.folate)
+
+
+boxplot(folate~ventilation , data=red.cell.folate)
+summary(aov(folate~ventilation , data=red.cell.folate))
+
+
+```
+Since the p-value is less than 0.05, we reject the null hypothesis. We conclude that there is significant difference among the means of these three groups.
+
+
+
+### 3-Load the juul data and have a look at the data and its descriptions. Compare the effects of tanner levels on amount of insulin-like growth factor igf1. Does the data show anytanner level having outstanding effect compared to others?
+
+```{r}
+
+
+
+Modified_Juul <- juul
+
+Modified_Juul$tanner <- factor(Modified_Juul$tanner,labels=c("I","II","III","IV","V"))
+
+
+
+summary(aov(igf1~tanner, data=Modified_Juul))
+
+
+
+```
+
+Since the p-value is less than 0.05, we reject the null hypothesis. We conclude that there is significant difference among the means of these three groups.
+

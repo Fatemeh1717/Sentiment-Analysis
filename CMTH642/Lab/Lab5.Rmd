@@ -1,0 +1,94 @@
+---
+title: "Lab5"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+### 1- A data science student is using two machine learning algorithms to analyze a given
+dataset. First, she tests her model with a Decision Tree using a 10-fold Cross Validation
+and records the Accuracy for each fold. She then repeats the same process using a 12-fold
+Logistic Regression algorithm on the same dataset. The accuracy for each fold of the
+algorithms are given as follows:
+
+Decision Tree: 75, 79, 69, 78, 65, 87, 74, 81, 77, 88
+Logistic Regression: 85, 68, 78, 73, 69, 76, 69, 80, 73, 67, 78, 82
+
+(a) Is the dataset paired or unpaired?
+(b) Can she conclude that either one of the machine learning algorithm is more accurate
+than the other?
+i. Create vectors for each algorithm. Check the means of the accuracy reported
+for the two models.
+ii. Run wilcox.test command to check the significance of the comparison.
+The dataset is not paired. Clearly, her experiments on Decision Tree has 10 records
+where her experiments on Logistic Regression has 12 records
+
+```{r}
+
+DT <- c(75, 79, 69, 78, 65, 87, 74, 81, 77, 88)
+LR <- c(85, 68, 78, 73, 69, 76, 69, 80, 73, 67, 78, 82)
+
+mean(DT)
+mean(LR)
+
+wilcox.test(LR,DT)
+
+```
+Since the p-value is greater than 0.05, we do not reject the null hypothesis. We conclude
+that there is not enough evidence to support that either machine learning algorithm is
+better than the other
+
+### 2- You want to see if pollution levels in a lake are reduced by banning the boat rentals.
+The rate of pollution is measured every 60 minutes (from 8am to 10pm: total of 15
+measurements) in a day when rental is allowed, and in a day when it is not. Here are
+the values of water pollution:
+With rental: 214, 159, 169, 202, 103, 119, 200, 109, 132, 142, 194, 104, 219, 119, 234.
+Without rental: 159, 135, 141, 101, 102, 168, 62, 167, 174, 159, 66, 118, 181, 171, 112.
+Assuming that these two groups are paired and based on the significant level = 0:05, in
+conclusion, does banning the boat rental reduce lake pollution? Give your decision by
+running the wilcox.test command and checking the p-value
+
+```{r}
+a <- c(214, 159, 169, 202, 103, 119, 200, 109, 132, 142, 194, 104, 219, 119, 234)
+b <- c(159, 135, 141, 101, 102, 168, 62, 167, 174, 159, 66, 118, 181, 171, 112)
+
+wilcox.test(a,b,paired = TRUE)
+
+```
+Since the p-value is greater than 0.05, we can say that the means have remained essentially
+unchanged (we cannot reject the null hypothesis). Then, we can conclude that banning
+the boat rental did not lead to any reduction in lake pollution.
+
+### 3- Suppose you want to compare two software Zip and Tar on archiving files. For our
+experiment we collect 20 files and execute Zip and Tar on these files. The execution time
+(time from the beginning till the end of the archiving files in milliseconds) is recorded as
+follows:
+Zip execution time: 10, 44, 65, 77, 43, 44, 22, 66, 50, 100, 55, 99, 44, 23, 100, 88, 200,
+220, 110, 551
+Tar execution time: 20, 55, 75, 60, 55, 88, 35, 33, 35, 80, 65, 82, 47, 35, 97, 110, 250,
+190, 111, 600
+Your task is to find out if there is any significant difference in the execution times of
+these two different archiving programs based on their running time on the same files.
+(a) Are these two groups of samplings paired or independent? Why?
+(b) Assuming that the data is not normally distributed, use wilcox.test test to calculate the p-value. Based on the significant level of α = 0.05, what do you conclude
+about differences between the mean of run-time of two different archiving programs?
+These two groups are paired, as the runtime is calculated based on archiving the same
+files.
+
+```{r}
+
+zip_files <- c(10, 44, 65, 77, 43, 44, 22, 66, 50, 100, 55, 99, 44, 23, 100, 88, 200,220, 110, 551)
+
+tar_files <- c(20, 55, 75, 60, 55, 88, 35, 33, 35, 80, 65, 82, 47, 35, 97, 110, 250,190, 111, 600)
+
+wilcox.test(zip_files , tar_files , paired = TRUE)
+
+```
+Since the p-value is greater than 0.05, we cannot reject the null hypothesis. We can
+conclude that there is no significant difference between the two software based on their
+execution time
+

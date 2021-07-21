@@ -1,0 +1,99 @@
+---
+title: "Lab 7"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
+
+### 1-Read the yelp data.csv provided to you in the course shell
+
+```{r}
+
+Yelp_Dataset <- read.csv(file = "C:/Users/Asma/Documents/Lab 7 yelp_dataset.csv", sep = ",", header = TRUE)
+
+```
+
+### 2-Have a look at the dataset by using the head command
+
+```{r}
+str(Yelp_Dataset)
+head(Yelp_Dataset)
+
+```
+
+### 3-Prepare data for modeling
+#1 Spliting the datadset into training and test sets:
+```{r}
+Yelp_Dataset <-Yelp_Dataset[,-1]
+Yelp_Dataset
+
+
+
+Yelp_Dataset$city <- as.factor(Yelp_Dataset$city)
+Yelp_Dataset$categories <- as.factor(Yelp_Dataset$categories)
+
+ str(Yelp_Dataset)
+```
+```{r}
+levels(Yelp_Dataset$city)
+Yelp_Dataset$city <- relevel(Yelp_Dataset$city,"Toronto")
+levels(Yelp_Dataset$city)
+```
+
+```{r}
+
+train_index <- sample(1:nrow(Yelp_Dataset), 0.7*nrow(Yelp_Dataset))
+train.set <- Yelp_Dataset[train_index,]
+test.set <- Yelp_Dataset[-train_index,]
+
+```
+#2 Removing the class column from training and test dataset
+
+```{r}
+train.set_new <- train.set[-2]
+test.set_new <- test.set[-2]
+
+```
+
+
+### 4- Create a logistic regression model
+
+
+```{r}
+glm_model <-glm(formula = class~.,data=train.set, family="binomial")
+summary(glm_model)
+
+```
+### 5-Assume a new coffee shop has just opened in Toronto and wants to know the probabilityof being above average restaurant (class=1). The coffee shop is expecting to receive 200reviews from its customers. Predict the probability of the coffee shop to be ranked as
+above average.
+
+```{r}
+x =data.frame(city="Toronto", review_count=200, categories="Coffee or Sandwiches")
+
+predict(glm_model,newdata =x,  type = "response")
+
+
+```
+### 6-Evaluate the performance of the model. Calculate the accuracy
+
+```{r}
+
+predicted <- predict(glm_model, test.set, type = "response")
+predicted_class <- ifelse(predicted>=0.5 , 1,0)
+
+ConfusionMatrix <- table(actual= test.set$class, predicted= predicted_class)
+ConfusionMatrix
+```
+```{r}
+sum(diag(ConfusionMatrix)/nrow(test.set))
+```
+
+
+
+
+
+

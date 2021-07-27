@@ -1,0 +1,348 @@
+---
+title: 'CMTH 642 Data Analytics: Advanced Methods'
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+<center> <h1> Assignment 1 (10%) </h1> </center>
+<center>  <h3> [Fatemeh Kamyabkalantari] </h2> </center>
+<center> <h3> [501087713] </h2> </center>
+---
+
+#### 1. Read the csv files in the folder. (4 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+Location <- getwd()
+
+Macro_Nut <- read.csv(paste(Location, "USDA_Macronutrients.csv", sep = "/"))
+
+Micro_Nut <- read.csv(paste(Location, "USDA_Micronutrients.csv", sep = "/"))
+
+
+```
+
+#### 2. Merge the data frames using the variable "ID". Name the Merged Data Frame "USDA". (4 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+Merged_USDA <- merge(Macro_Nut, Micro_Nut, by="ID")
+
+
+```
+
+#### 3. Check the datatypes of the attributes. Delete the commas in the Sodium and Potasium records. Assign Sodium and Potasium as numeric data types. (4 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+str(Merged_USDA)
+
+Merged_USDA$Sodium = gsub(",","",Merged_USDA$Sodium, fixed = TRUE )
+Merged_USDA$Sodium = as.numeric(Merged_USDA$Sodium , fixed = TRUE)
+
+Merged_USDA$Potassium = gsub(",","",Merged_USDA$Potassium)
+Merged_USDA$Potassium = as.numeric(Merged_USDA$Potassium)
+
+#Applying sapply function to check datatypes
+sapply(Merged_USDA, class)
+
+```
+
+```{r}
+head(Merged_USDA)
+
+```
+
+```{r}
+tail(Merged_USDA)
+```
+
+
+
+
+#### 4. Remove records (rows) with missing values in more than 4 attributes (columns). How many records remain in the data frame? (4 points)
+
+
+```{r}
+
+Original_Record<- cat("Original_Record: ", nrow(Merged_USDA))
+
+
+Merged_USDA <- Merged_USDA[rowSums(is.na(Merged_USDA)) < 5,]
+
+
+Remaning_Record <- cat("Remaning_Record: ", nrow(Merged_USDA))
+
+
+
+
+```
+
+
+
+
+#### 5. For records with missing values for Sugar, Vitamin E and Vitamin D, replace missing values with mean value for the respective variable. (4 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+
+Merged_USDA$Sugar[is.na(Merged_USDA$Sugar)] = mean(Merged_USDA$Sugar[!is.na(Merged_USDA$Sugar)])
+
+Merged_USDA$VitaminE[is.na(Merged_USDA$VitaminE)] = mean(Merged_USDA$VitaminE[!is.na(Merged_USDA$VitaminE)])
+
+Merged_USDA$VitaminD[is.na(Merged_USDA$VitaminD)] = mean(Merged_USDA$VitaminD[!is.na(Merged_USDA$VitaminD)])
+
+#Validate our function
+summary(is.na(Merged_USDA$Sugar))
+summary(is.na(Merged_USDA$VitaminE))
+summary(is.na(Merged_USDA$VitaminD))
+
+```
+
+#### 6. With a single line of code, remove all remaining records with missing values. Name the new Data Frame "USDAclean". How many records remain in the data frame? (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+USDAclean <- Merged_USDA[complete.cases(Merged_USDA),] 
+cat("Number of remaining records:", nrow(USDAclean))
+
+
+
+
+```
+
+#### 7. Which food has the highest sodium level? (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+
+USDAclean$Description[USDAclean$Sodium == max(USDAclean$Sodium)]
+
+```
+
+#### 8. Create a histogram of Vitamin C distribution in foods. (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+
+hist(USDAclean$VitaminC,xlab = "Vitamin C" ,main="Histogram of Vitamin C",xlim=c(0,100), breaks=100 , col = c("red","green","blue", "yellow"))
+
+```
+
+#### 9. Create a boxplot to illustrate the distribution of values for TotalFat, Protein and Carbohydrate. (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+boxplot(USDAclean$TotalFat, USDAclean$Protein, USDAclean$Carbohydrate ,main = "Boxplot of TotalFat, Protein and Carbohydrate", xlab="TotalFat, Protein and Carbohydrate",col= c("pink","green", "yellow"))
+
+```
+
+#### 10. Create a scatterplot to illustrate the relationship between a food's TotalFat content and its Calorie content. (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+plot(USDAclean$TotalFat, USDAclean$Calories, col=c("purple","orange"), xlab = "TotalFat", ylab = "Calories", main = "Totalfat Vs Calories")
+
+
+```
+
+#### 11. Add a variable to the data frame that takes value 1 if the food has higher sodium than average, 0 otherwise. Call this variable HighSodium. Do the same for High Calories, High Protein, High Sugar, and High Fat. How many foods have both high sodium and high fat? (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+USDAclean$HighSodium <- 0
+USDAclean$HighSodium[USDAclean$Sodium > mean(USDAclean$Sodium)]=1 
+
+USDAclean$HighCalories <- 0
+USDAclean$HighCalories[USDAclean$Calories > mean(USDAclean$Calories)]=1
+
+USDAclean$HighProtein <- 0
+USDAclean$HighProtein[USDAclean$Protein > mean(USDAclean$Protein)]=1
+
+USDAclean$HighSugar <- 0
+USDAclean$HighSugar[USDAclean$Sugar > mean(USDAclean$Sugar)]=1
+
+USDAclean$HighFat <- 0
+USDAclean$HighFat[USDAclean$TotalFat > mean(USDAclean$TotalFat)]=1
+
+
+cat(sum(apply(USDAclean[c("HighSodium", "HighFat")], 1, function(x) sum(x) == 2)),
+"foods have both high sodium and high fat.")
+
+```
+
+#### 12. Calculate the average amount of iron, for high and low protein foods. (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+
+tapply(USDAclean$Iron, USDAclean$HighProtein, mean)
+
+```
+
+#### 13. Create a function for a "HealthCheck" program to detect unhealthy foods. Use the algorithm flowchart below as a basis. (5 points)
+```{r}
+require(jpeg)
+img<-readJPEG("HealthCheck.jpg")
+plot(1:4, ty = 'n', ann = F, xaxt = 'n', yaxt = 'n')
+rasterImage(img,1,1,4,4)
+```
+```{r}
+# INSERT YOUR ANSWER HERE
+
+HealthCheck = function(x){
+if(x$HighSodium == 0) return("Pass")
+else if(x$HighSugar == 0)return("Pass")
+else if(x$HighFat == 0 )return("Pass")
+else return("Fail")
+}
+
+
+```
+
+#### 14. Add a new variable called HealthCheck to the data frame using the output of the function. (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+
+for (i  in 1:nrow(USDAclean)) {
+  USDAclean$HealthCheck[i]=HealthCheck(USDAclean[i,])
+  
+}
+str(USDAclean)
+
+```
+
+#### 15. How many foods in the USDAclean data frame fail the HealthCheck? (5 points)
+```{r}
+# INSERT YOUR ANSWER HERE
+cat("The number is: ",sum(USDAclean$HealthCheck == "Fail"))
+
+```
+
+#### 16. Visualize the correlation among Calories, Protein, Total Fat, Carbohydrate, Sodium and Cholesterol. (5 points)
+```{r}
+# INSERT YOUR CODE HERE.
+# First for more investigation,  boxplots are drawn for each variable.
+boxplot(USDAclean$Calories, ylab="Amount",xlab="Calories" ,col="yellow")
+
+```
+
+```{r}
+boxplot(USDAclean$Protein, ylab="Amount", xlab="Protein" , col="Beige")
+```
+
+```{r}
+boxplot(USDAclean$TotalFat, ylab="Amount", xlab="TotalFat",col="light Blue")
+```
+
+```{r}
+boxplot(USDAclean$Carbohydrate, ylab="Amount",xlab="Carbohydrate", col="light Pink")
+```
+
+```{r}
+boxplot(USDAclean$Sodium, ylab="Amount", col="Purple" , xlab="Sodium")
+```
+
+```{r}
+boxplot(USDAclean$Cholesterol, ylab="Amount", col="Orange", xlab="Cholesterol")
+
+
+```
+
+
+```{r}
+# Then I Use the Pearson Correlation to compute the correlation.
+Selected_Features <- USDAclean[,c('Calories', 'Carbohydrate',
+'Protein', 'TotalFat', 'Sodium')]
+
+#install.packages("PerformanceAnalytics")
+library(PerformanceAnalytics)
+
+chart.Correlation(Selected_Features, histogram = TRUE)
+
+```
+
+
+
+#### 17. Is the correlation between Calories and Total Fat statistically significant? Why? (5 points)
+```{r}
+# INSERT YOUR CODE HERE AND EXPLAIN YOUR ANSWER AS A COMMENT.
+
+cor.test(USDAclean$Calories, USDAclean$TotalFat)
+
+# The correlation between Calories and Total Fat is statistically significant
+#as the p-value, 2.2e-16, is less than the confidence level of 0.05.
+
+```
+
+#### 18. Create a Linear Regression Model, using Calories as the dependent variable Protein, Total Fat, Carbohydrate, Sodium and Cholesterol as the independent variables. (5 points)
+```{r}
+# WRITE YOUR ANSWER AS A COMMENT.
+
+lm_USD <- lm(USDAclean$Calories ~ USDAclean$Protein + USDAclean$TotalFat+
+               USDAclean$Carbohydrate + USDAclean$Sodium + USDAclean$Cholesterol)
+summary(lm_USD)
+
+# y = 3.9882753 + 3.9891994(Protein) + 8.7716980(TotalFat) + 3.7432001(Carbohydrate) + 0.0003383(Sodium) + 0.0110138(Cholesterol)
+
+```
+
+#### 19. Which independent variable is the least significant? Why? (Hint: Use ANOVA) (5 points)
+```{r}
+# INSERT YOUR CODE HERE AND EXPLAIN YOUR ANSWER AS A COMMENT.
+
+lmAnova_USD <- anova(lm_USD)
+
+lmAnova_USD
+
+# Sodium is the least significant variable. We can interpret this from the
+#Analysis of Variance Table. The p-value for sodium is 0.1378, which is not
+#very significant, especially compared to the p-values of the other variables,
+#which are all much smaller, less than 2e-16.
+
+```
+
+#### 20. A new product is just produced with the following data: Protein=0.1, TotalFat=37, Carbohydrate=400, Sodium=440, Cholesterol=75, Sugar=NA, Calcium=35, Iron=NA, Potassium=35, VitaminC=10,	VitaminE=NA, VitaminD=NA. Based on the model you created, what is the predicted value for Calories? (5 points)
+```{r}
+# INSERT YOUR CODE HERE.
+
+
+
+New_Product <- data.frame(Protein=0.1, TotalFat=37, Carbohydrate=400, Sodium=440, Cholesterol=75, Sugar=NA, Calcium=35, Iron=NA, Potassium=35, VitaminC=10,	VitaminE=NA, VitaminD=NA)
+
+
+Predicted_Calories <- 3.9882753 + 3.9891994*New_Product$Protein +
+8.7716980*New_Product$TotalFat + 3.7432001*New_Product$Carbohydrate +
+0.0003383*New_Product$Sodium + 0.0110138*New_Product$Cholesterol
+
+Predicted_Calories
+
+```
+
+#### 21. If the Sodium amount increases from 440 to 44440 (10000% increase), how much change will occur on Calories in percent? Explain why? (5 points)
+```{r}
+# INSERT YOUR CODE HERE AND EXPLAIN YOUR ANSWER AS A COMMENT.
+
+Predicted_Calories_Increased <- 3.9882753 + 3.9891994*New_Product$Protein +
+8.7716980*New_Product$TotalFat + 3.7432001*New_Product$Carbohydrate +
+0.0003383*44440 + 0.0110138*New_Product$Cholesterol
+
+Predicted_Calories_Increased
+
+Change_in_Calories <- (44440-440)*0.0003383
+Percentage_of_Change <- (Change_in_Calories/Predicted_Calories)* 100
+Percentage_of_Change
+
+# If the value of Sodium increased from 440 to 44440, the value of Calories
+#would change by 14.8852. This represents a 0.81% change in the value of
+#Calories from when Sodium was equal to 440. To get this result we multiply
+#the difference in the Sodium value from before to after (44440-440 = 44000)
+#by the coefficient for Sodium from the model, which is 0.0003383. We use this
+#value in our regression calculation. The coefficient describes the change in
+#the dependent variable for each unit of change in the Sodium variable.
+
+```
+
+
+This is the end of Assignment 1
+
+Ceni Babaoglu, PhD

@@ -6,8 +6,8 @@ output:
   word_document: default
 ---
 <center> <h1> Assignment 1 (10%) </h1> </center>
-<center>  <h3> [Fatemeh Kamyabkalantari] </h2> </center>
-<center> <h3> [501087713] </h2> </center>
+<center>  <h3> </h2> </center>
+<center> <h3> </h2> </center>
 ---
 
 #### 1. Read the csv files in the folder. (4 points)

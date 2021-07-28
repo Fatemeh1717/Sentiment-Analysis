@@ -36,8 +36,6 @@ as Benign and M as Malignant and see the results in the percentage form, you may
 write:
 
 ```{r}
-#Cancer_Dataset$diagnosis_result <- factor(Cancer_Dataset$diagnosis_result, levels= c("B","M"), labels= c("Benign","Malignant"))
-
 Cancer_Dataset$diagnosis_result<- factor(Cancer_Dataset$diagnosis_result,
 levels = c("B", "M"),
 labels = c("Benign", "Malignant"))

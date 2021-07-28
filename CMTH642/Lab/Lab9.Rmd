@@ -1,0 +1,106 @@
+---
+title: "Lab 9"
+output: html_document
+---
+Preparation
+```{r}
+install.packages("class")
+install.packages("gmodels")
+library(class)
+library(gmodels)
+```
+
+
+
+1. Download Prostate Cancer.csv from the course shell. The dataset contains patients
+who have been diagnosed with either Malignant (M) or Benign (B) cancer
+
+```{r}
+Cancer_Dataset <- read.csv("C:/Users/Asma/Documents/prostate_cancer_dataset.csv", sep = "," , stringsAsFactors = FALSE)
+
+head(Cancer_Dataset)
+
+```
+2. Check the data characteristics. Remove the first variable (id) from the dataset. Get the
+numbers of patients in each class.
+
+```{r}
+str(Cancer_Dataset)
+Cancer_Dataset <- Cancer_Dataset[-1]
+table(Cancer_Dataset$diagnosis_result)
+```
+
+The variable diagnosis result is the target variable. This variable will determine the
+results of the diagnosis based on the 8 numeric variables. In case you wish to rename B
+as Benign and M as Malignant and see the results in the percentage form, you may
+write:
+
+```{r}
+#Cancer_Dataset$diagnosis_result <- factor(Cancer_Dataset$diagnosis_result, levels= c("B","M"), labels= c("Benign","Malignant"))
+
+Cancer_Dataset$diagnosis_result<- factor(Cancer_Dataset$diagnosis_result,
+levels = c("B", "M"),
+labels = c("Benign", "Malignant"))
+
+round(prop.table(table(Cancer_Dataset$diagnosis_result))*100, digits = 1)
+
+```
+
+3. Create a function to normalize a variable. Normalize the numeric variables in the dataset
+to transfer their values to a common scale.
+
+```{r}
+
+Normalize <- function(x){
+  return((x-min(x))/(max(x)-min(x)))
+}
+
+```
+
+```{r}
+Cancer_Dataset_N <- as.data.frame(lapply(Cancer_Dataset[2:9], Normalize))
+Cancer_Dataset_N <-cbind(Cancer_Dataset$diagnosis_result, Cancer_Dataset_N)
+
+```
+The first variable in the dataset (after removal of id) is diagnosis result which is not
+numeric in nature. So, you start from the second variable. The function lapply()
+applies normalize() to each feature in the data frame.
+
+Using the variable radius, you can check whether the data has been normalized
+
+```{r}
+summary(Cancer_Dataset_N$radius)
+```
+4. Split the dataset into training and test sets.
+
+```{r}
+set.seed(123)
+
+Cancer_Dataset_Index <- sample(1:nrow(Cancer_Dataset_N), 0.65* nrow(Cancer_Dataset_N))
+
+Cancer_Dataset_train <- Cancer_Dataset_N[Cancer_Dataset_Index, ]
+Cancer_Dataset_test <- Cancer_Dataset_N[-Cancer_Dataset_Index,]
+
+```
+
+5. Use the KNN algorithm to predict the cancer
+
+```{r}
+Cancer_train_labels <- Cancer_Dataset_train[,1]
+Cancer_test_labels <- Cancer_Dataset_test[,1]
+
+
+```
+
+```{r}
+
+Cancer_test_Pred <- knn(train=Cancer_Dataset_train[,2:9], test=Cancer_Dataset_test[,2:9], cl=Cancer_Dataset_train[,1], k=10)
+
+```
+6. Evaluate the model performance
+
+```{r}
+table(Actual=Cancer_test_labels , Predicted = Cancer_test_Pred)
+
+```
+

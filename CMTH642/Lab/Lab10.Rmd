@@ -2,7 +2,7 @@
 title: "Multiple Regression"
 output: html_document
 ---
-we will have some examples on variable selection for multiple linear regression.
+
 Preparton:
 ```{r}
 install.packages("RCurl")

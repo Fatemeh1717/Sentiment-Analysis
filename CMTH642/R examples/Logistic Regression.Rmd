@@ -1,0 +1,45 @@
+---
+title: "Logistic_Regression"
+output: html_document
+---
+We are interested to see how variables, such as GRE (Graduate Record Exam scores), GPA (grade point average) and prestige of the undergraduate institution, effect admission into graduate school at UCLA. The data for this analysis is collected from (http://stats.idre.ucla.edu/). The admit variable, admit/not admitted, is a binary variable. data can be obtained from our website from within R.
+
+```{r}
+Admission_Data <- read.csv(file="https://stats.idre.ucla.edu/stat/data/binary.csv", sep = ",")
+
+
+head(Admission_Data)
+str(Admission_Data)
+summary(Admission_Data)
+sapply(Admission_Data, sd)
+```
+
+
+
+```{r}
+install.packages("pastecs")
+library(pastecs)
+stat.desc(Admission_Data)
+xtabs(~admit + rank , Admission_Data)
+
+```
+
+The code below estimates a logistic regression model using the glm (generalized linear model) function. First, we convert rank to a factor to indicate that rank should be treated as a categorical variable.
+
+```{r}
+Admission_Data$rank_cat <- as.factor(Admission_Data$rank)
+head(Admission_Data)
+
+#install.packages("dplyr")
+
+library(dplyr)
+feature_cols <- select(Admission_Data, gre, gpa, rank_cat ,)
+X <- feature_cols
+Y <- Admission_Data$admit
+Model <- glm(formula = admit~ gre+gpa+rank_cat, data = Admission_Data)
+summary(Model)
+```
+
+
+
+

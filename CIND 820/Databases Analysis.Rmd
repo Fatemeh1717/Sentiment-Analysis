@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+#AGnews_Train
+AGnews_Train <-  read.csv(file ='C:/Users/HP/Desktop/My Database/AG news/train.csv', header=TRUE , sep=',')
+summary(AGnews_Train)
+table(AGnews_Train$Class.Index)
+
+
+```
+
+```{r}
+#AGnews_Test
+AGnews_Test <-  read.csv(file ='C:/Users/HP/Desktop/My Database/AG news/test.csv', header=TRUE , sep=',')
+summary(AGnews_Test)
+table(AGnews_Test$Class.Index)
+
+```
+
+
+```{r}
+
+#IMDBDataset
+IMDBDataset <-  read.csv(file ='C:/Users/HP/Desktop/My Database/IMDB Dataset.csv/IMDB Dataset.csv', header=TRUE , sep=',')
+summary(IMDBDataset)
+table(IMDBDataset$sentiment)
+
+```
+```{r}
+#YahooAnswersTrain
+YahooAnswersTrain <-  read.csv(file ='C:/Users/HP/Desktop/My Database/Yahoo-Answer/yahoo_answers_csv/train.csv', sep=',')
+colnames(YahooAnswersTrain) <- c("Class.Index", "question title","question content","best answer")
+summary(YahooAnswersTrain)
+table(YahooAnswersTrain$Class.Index)
+
+```
+```{r}
+#YahooAnswersTest
+YahooAnswersTest <-  read.csv(file ='C:/Users/HP/Desktop/My Database/Yahoo-Answer/yahoo_answers_csv/test.csv',  sep=',')
+colnames(YahooAnswersTest) <- c("Class.Index", "question title","question content","best answer")
+summary(YahooAnswersTest)
+table(YahooAnswersTest$Class.Index)
+```
+
+
+

@@ -101,7 +101,7 @@ And also:
 
 
 ## Dataset
-We used the IMDB dataset (Maaset al., 2011) including 50K movie reviews with two labels. These 50k short texts belong to 2 classes which are 1 (positive/good review) and 0 (negative/bad review).
+We used the IMDB dataset (Maaset al., 2011) including 50K movie reviews with two labels. These 50k short texts belong to 2 classes which are 1 (positive/good review) and 0 (negative/bad review).(https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)
 
 ```bash
    review           sentiment        

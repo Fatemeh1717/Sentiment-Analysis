@@ -1,27 +1,30 @@
 
 # Sentiment Analysis using BERT , CNN, BERT+CNN in Tensorflow
 
- I am going to apply CNN , BERT, CNN+BERT Models to compute vector-space representations of a IMDB dataset which has two class
+The goal of our project is to classifiy correctly whether movie reviews from IMDB are positive or negative. first,the traditional statiscical approaches called Bag of Words, TF-IDF (Term Frequency - Inverse Document Frequency), and Word2Vec have been applied and we could compare how differently these methods work . At the second part I am going to apply CNN , BERT, CNN+BERT MOodels to compute vector-space representations of a dataset.
  
- 1- **Positive:1**
 
- 2- **Negative:0**
- 
-This notebook has three section. At the **First part** I will: 
+This notebook has two section. At the **First part** I will: 
 
 *   Load the IMDB dataset
+*   Splitting the dataset between training and test set
+*   Data Cleaning and Text Preprocessing
+*   Visualization
+*   Bag of Words
+*   TF-IDF
+*   Word2Vec
+*   Logistic Regression Model
+*   Conclusion
+
+**Second Part**
 *   Load a **BERT models** from TensorFlow Hub 
 *   Build the model by combining BERT with a classifier
 *   Train the model, fine-tuning BERT as part of that
 *   Save the model
-
-**Second Part**
 *   Build the Convolutional Neural Network Model
 *   Train , evaluate the model using Confusion Matrix
 *   Save the model 
-
-**Third part** 
-Includes using the pretreined BERT to compute vector-space representations of the IMDB dataset to feed to **CNN** downsteam Archtectures
+Includes using the pretreined BERT to compute vector-space representations of the IMDB dataset to feed to **CNN** downsteam Archtectures.
 
 
 # BERT
